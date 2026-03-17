@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ExternalClientApplication xmlns="http://soap.sforce.com/2006/04/metadata">
+  <contactEmail>admin@example.com</contactEmail>
+  <description>External Client App for Salesforce Hosted MCP (Claude Code). Created via setup-mcp-prereqs.sh.</description>
+  <distributionType>Local</distributionType>
+  <enableApiAccess>true</enableApiAccess>
+  <masterLabel>MCP For Claude Code</masterLabel>
+  <oauthConfig>
+    <extlClntAppGlobalOauthSettings>MCPForClaudeCodeGlblOauth</extlClntAppGlobalOauthSettings>
+    <extlClntAppOauthSettings>MCPForClaudeCodeSettings</extlClntAppOauthSettings>
+  </oauthConfig>
+</ExternalClientApplication>

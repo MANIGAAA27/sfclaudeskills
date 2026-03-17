@@ -69,14 +69,20 @@ Replace `YOUR_ORG_ALIAS` with your org alias from `sf org list`. This writes to 
 
 ### Hosted (Beta)
 
-1. Enable the Beta and create an External Client App in your org (see [mcp-hosted Wiki](https://github.com/forcedotcom/mcp-hosted/wiki) — [Enable the Beta](https://github.com/forcedotcom/mcp-hosted/wiki/Enable-the-Beta), [Create an External Client App](https://github.com/forcedotcom/mcp-hosted/wiki/Create-an-External-Client-App)).
+1. **MCP prerequisites (Beta + ECA)** — Enable the MCP Beta in your org and deploy an External Client App. From the repo (or from `sfclaudeskills/` if you cloned into a project):
+
+   ```bash
+   TARGET_ORG=your-org-alias ./setup-mcp-prereqs.sh
+   ```
+
+   Optional: `MCP_ECA_CALLBACK_URL=http://localhost:8080/oauth/callback` (default). The script uses Salesforce CLI to deploy the ECA metadata; it will open Setup so you can turn on the Beta if there’s no CLI API for it. See [mcp-hosted Wiki](https://github.com/forcedotcom/mcp-hosted/wiki) — [Enable the Beta](https://github.com/forcedotcom/mcp-hosted/wiki/Enable-the-Beta), [Create an External Client App](https://github.com/forcedotcom/mcp-hosted/wiki/Create-an-External-Client-App). If deploy fails, create the ECA manually per the wiki, then get the consumer key for the next step.
 2. From your project root, run the auto-setup script to generate **`.mcp.json`** with the Hosted MCP URL:
 
    ```bash
    ./sfclaudeskills/setup-hosted-mcp.sh
    ```
 
-   For sandbox/scratch orgs: `SALESFORCE_MCP_SANDBOX=1 ./sfclaudeskills/setup-hosted-mcp.sh`. Optional: `SALESFORCE_MCP_SERVER=platform/sobject-all` (default).
+   For sandbox/scratch orgs: `SALESFORCE_MCP_SANDBOX=1 ./sfclaudeskills/setup-hosted-mcp.sh`. Optional: `SALESFORCE_MCP_SERVER=platform/sobject-all` (default). You’ll need the **consumer key** from your External Client App when prompted.
 3. In Claude Code, run **`/mcp`** to authenticate with your External Client App (OAuth).
 4. Test the connection in Claude Code.
 
@@ -86,7 +92,7 @@ Once MCP is enabled, Claude Code can use natural language for org queries, metad
 
 ## Salesforce Hosted MCP (Beta)
 
-[Salesforce Hosted MCP Servers](https://github.com/forcedotcom/mcp-hosted) let Claude Code connect to your org over HTTPS using an External Client App (OAuth). Setup is documented in the [mcp-hosted Wiki](https://github.com/forcedotcom/mcp-hosted/wiki). The script **setup-hosted-mcp.sh** checks prereqs (Node, Salesforce CLI), optionally creates a scratch org with the MCP Beta feature (`CREATE_SCRATCH=1 ./setup-hosted-mcp.sh`), and generates **`.mcp.json`** in the project. Use **`/mcp`** in Claude Code to complete OAuth. Full list of hosted servers and tools: [Available Tools and Servers](https://github.com/forcedotcom/mcp-hosted/wiki/Available-Tools-and-Servers).
+[Salesforce Hosted MCP Servers](https://github.com/forcedotcom/mcp-hosted) let Claude Code connect to your org over HTTPS using an External Client App (OAuth). Setup is documented in the [mcp-hosted Wiki](https://github.com/forcedotcom/mcp-hosted/wiki). Use **setup-mcp-prereqs.sh** first to enable the MCP Beta (via Setup) and deploy the External Client App via Salesforce CLI; then **setup-hosted-mcp.sh** checks prereqs (Node, Salesforce CLI), optionally creates a scratch org with the MCP Beta feature (`CREATE_SCRATCH=1 ./setup-hosted-mcp.sh`), and generates **`.mcp.json`** in the project. Use **`/mcp`** in Claude Code to complete OAuth. Full list of hosted servers and tools: [Available Tools and Servers](https://github.com/forcedotcom/mcp-hosted/wiki/Available-Tools-and-Servers).
 
 ---
 
@@ -115,6 +121,7 @@ your-salesforce-project/
 └── sfclaudeskills/           # optional: keep for re-runs
     ├── README.md
     ├── setup.sh
+    ├── setup-mcp-prereqs.sh  # Hosted MCP: enable Beta + deploy ECA
     ├── setup-hosted-mcp.sh
     ├── install.sh
     ├── CLAUDE.md

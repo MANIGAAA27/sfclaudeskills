@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ExtlClntAppGlobalOauthSettings xmlns="http://soap.sforce.com/2006/04/metadata">
+  <callbackUrl>CALLBACK_URL_PLACEHOLDER</callbackUrl>
+  <consumerSecretInMetadata>false</consumerSecretInMetadata>
+  <enableProofKeyCodeExchange>true</enableProofKeyCodeExchange>
+  <useJwtAccessToken>true</useJwtAccessToken>
+</ExtlClntAppGlobalOauthSettings>
