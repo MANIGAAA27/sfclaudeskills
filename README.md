@@ -13,7 +13,7 @@
 
 - [Salesforce CLI](https://developer.salesforce.com/tools/sfdxcli) installed (`sf`).
 - At least one authenticated org: `sf org login web`.
-- For **Salesforce MCP**: Node.js v18+ and Cursor (or another MCP host).
+- For **Salesforce MCP**: Node.js v18+ and an MCP-capable host (e.g. Cursor, Claude Desktop, or Claude Code).
 
 ---
 
@@ -52,11 +52,15 @@ This installs CLAUDE.md, `.claude/`, and `docs/` into the same repo (use this if
 
 ---
 
-## Enable Salesforce MCP (Cursor)
+## Enable Salesforce MCP for Claude
+
+This toolkit is for **Claude** (Claude Code, Claude in the IDE, or Claude Desktop). To give Claude access to Salesforce via MCP, configure MCP in whatever host you use to run Claude. Below are instructions for **Cursor** (when you use Cursor as the IDE with Claude). For **Claude Desktop** or **Claude Code** in another editor, use the same MCP servers with your host’s MCP config; see [Configure Your MCP Client](https://github.com/forcedotcom/mcp-hosted/wiki/Configure-Your-MCP-Client) for Claude-specific steps.
+
+### If you use Cursor as your host for Claude
 
 Two options:
 
-### Local (Salesforce DX MCP)
+**Local (Salesforce DX MCP)**
 
 1. Install Salesforce CLI and authenticate an org: `sf org list`.
 2. Copy the MCP example and set your default org alias:
@@ -69,7 +73,7 @@ Two options:
 3. Edit **.cursor/mcp.json** and replace `YOUR_DEFAULT_ORG_ALIAS` with your org alias (from `sf org list`).
 4. Restart Cursor so it loads the MCP server.
 
-### Hosted (Beta)
+**Hosted (Beta)**
 
 1. Enable the Beta and create an External Client App in your org (see [mcp-hosted Wiki](https://github.com/forcedotcom/mcp-hosted/wiki) — [Enable the Beta](https://github.com/forcedotcom/mcp-hosted/wiki/Enable-the-Beta), [Create an External Client App](https://github.com/forcedotcom/mcp-hosted/wiki/Create-an-External-Client-App)).
 2. From your project root, run the auto-setup script:
@@ -82,13 +86,13 @@ Two options:
 3. Alternatively, copy the Hosted template and edit manually: `cp sfclaudeskills/templates/cursor-mcp-hosted.json .cursor/mcp.json`, then replace `CONSUMER_KEY` and `SERVER_PATH` (use `platform/sobject-all` for Developer org, or `sandbox/platform/sobject-all` for sandbox).
 4. Restart Cursor.
 
-Agents can then use natural language for org queries, metadata, and data; use Salesforce CLI for scripted/CI (deploy, retrieve, tests). See [docs/AGENT_TOOLS.md](docs/AGENT_TOOLS.md) after install.
+Once MCP is enabled in your host, Claude can use natural language for org queries, metadata, and data; use Salesforce CLI for scripted/CI (deploy, retrieve, tests). See [docs/AGENT_TOOLS.md](docs/AGENT_TOOLS.md) after install.
 
 ---
 
 ## Salesforce Hosted MCP (Beta)
 
-[Salesforce Hosted MCP Servers](https://github.com/forcedotcom/mcp-hosted) let external AI clients (e.g. Cursor, Claude) connect to your org over HTTPS using an External Client App (OAuth). Setup is documented in the [mcp-hosted Wiki](https://github.com/forcedotcom/mcp-hosted/wiki). The auto-setup script **setup-hosted-mcp.sh** checks prereqs (Node, Salesforce CLI), optionally creates a scratch org with the MCP Beta feature (`CREATE_SCRATCH=1 ./setup-hosted-mcp.sh`), and generates `.cursor/mcp.json` for Cursor. Manual steps (Enable Beta in Setup, Create External Client App, paste consumer key) are printed at the end of the script. Full list of hosted servers and tools: [Available Tools and Servers](https://github.com/forcedotcom/mcp-hosted/wiki/Available-Tools-and-Servers).
+[Salesforce Hosted MCP Servers](https://github.com/forcedotcom/mcp-hosted) let Claude (and other AI clients) connect to your org over HTTPS using an External Client App (OAuth). Setup is documented in the [mcp-hosted Wiki](https://github.com/forcedotcom/mcp-hosted/wiki). The auto-setup script **setup-hosted-mcp.sh** checks prereqs (Node, Salesforce CLI), optionally creates a scratch org with the MCP Beta feature (`CREATE_SCRATCH=1 ./setup-hosted-mcp.sh`), and can generate MCP config for Cursor (`.cursor/mcp.json`). Manual steps (Enable Beta in Setup, Create External Client App, paste consumer key) are printed at the end of the script. For Claude Desktop or other hosts, configure MCP per the [wiki](https://github.com/forcedotcom/mcp-hosted/wiki/Configure-Your-MCP-Client). Full list of hosted servers and tools: [Available Tools and Servers](https://github.com/forcedotcom/mcp-hosted/wiki/Available-Tools-and-Servers).
 
 ---
 
