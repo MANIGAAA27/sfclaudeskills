@@ -48,10 +48,15 @@ This installs CLAUDE.md, `.claude/`, and `docs/` into the same repo (use this if
 - Copies **.claude/rules/** and **.claude/skills/** into your project.
 - Creates **docs/PROJECT_MEMORY.md** from template (only if missing).
 - Creates **docs/AGENT_TOOLS.md** (Salesforce CLI + MCP) (only if missing).
+- Creates **docs/HOSTED_MCP_TOOLS.md** (Hosted MCP server/tool reference) (only if missing).
 
 ---
 
 ## Enable Salesforce MCP (Cursor)
+
+Two options:
+
+### Local (Salesforce DX MCP)
 
 1. Install Salesforce CLI and authenticate an org: `sf org list`.
 2. Copy the MCP example and set your default org alias:
@@ -64,7 +69,26 @@ This installs CLAUDE.md, `.claude/`, and `docs/` into the same repo (use this if
 3. Edit **.cursor/mcp.json** and replace `YOUR_DEFAULT_ORG_ALIAS` with your org alias (from `sf org list`).
 4. Restart Cursor so it loads the MCP server.
 
+### Hosted (Beta)
+
+1. Enable the Beta and create an External Client App in your org (see [mcp-hosted Wiki](https://github.com/forcedotcom/mcp-hosted/wiki) — [Enable the Beta](https://github.com/forcedotcom/mcp-hosted/wiki/Enable-the-Beta), [Create an External Client App](https://github.com/forcedotcom/mcp-hosted/wiki/Create-an-External-Client-App)).
+2. From your project root, run the auto-setup script:
+
+   ```bash
+   ./sfclaudeskills/setup-hosted-mcp.sh
+   ```
+
+   When prompted, paste your External Client App **consumer key**. Or set env and re-run: `SALESFORCE_MCP_CONSUMER_KEY=your_key ./sfclaudeskills/setup-hosted-mcp.sh`. For sandbox/scratch orgs: `SALESFORCE_MCP_SANDBOX=1 ./sfclaudeskills/setup-hosted-mcp.sh`.
+3. Alternatively, copy the Hosted template and edit manually: `cp sfclaudeskills/templates/cursor-mcp-hosted.json .cursor/mcp.json`, then replace `CONSUMER_KEY` and `SERVER_PATH` (use `platform/sobject-all` for Developer org, or `sandbox/platform/sobject-all` for sandbox).
+4. Restart Cursor.
+
 Agents can then use natural language for org queries, metadata, and data; use Salesforce CLI for scripted/CI (deploy, retrieve, tests). See [docs/AGENT_TOOLS.md](docs/AGENT_TOOLS.md) after install.
+
+---
+
+## Salesforce Hosted MCP (Beta)
+
+[Salesforce Hosted MCP Servers](https://github.com/forcedotcom/mcp-hosted) let external AI clients (e.g. Cursor, Claude) connect to your org over HTTPS using an External Client App (OAuth). Setup is documented in the [mcp-hosted Wiki](https://github.com/forcedotcom/mcp-hosted/wiki). The auto-setup script **setup-hosted-mcp.sh** checks prereqs (Node, Salesforce CLI), optionally creates a scratch org with the MCP Beta feature (`CREATE_SCRATCH=1 ./setup-hosted-mcp.sh`), and generates `.cursor/mcp.json` for Cursor. Manual steps (Enable Beta in Setup, Create External Client App, paste consumer key) are printed at the end of the script. Full list of hosted servers and tools: [Available Tools and Servers](https://github.com/forcedotcom/mcp-hosted/wiki/Available-Tools-and-Servers).
 
 ---
 
@@ -75,7 +99,8 @@ your-salesforce-project/
 ├── CLAUDE.md
 ├── docs/
 │   ├── PROJECT_MEMORY.md
-│   └── AGENT_TOOLS.md
+│   ├── AGENT_TOOLS.md
+│   └── HOSTED_MCP_TOOLS.md
 ├── .claude/
 │   ├── rules/
 │   │   └── project-memory.md
@@ -91,6 +116,7 @@ your-salesforce-project/
 └── sfclaudeskills/          # optional: keep for re-runs
     ├── README.md
     ├── setup.sh
+    ├── setup-hosted-mcp.sh
     ├── install.sh
     ├── CLAUDE.md
     ├── rules/
@@ -98,7 +124,9 @@ your-salesforce-project/
     ├── docs/
     └── templates/
         ├── PROJECT_MEMORY.md
-        └── cursor-mcp.json
+        ├── cursor-mcp.json
+        ├── cursor-mcp-hosted.json
+        └── scratch-def-mcp.json
 ```
 
 ---
@@ -109,6 +137,7 @@ your-salesforce-project/
 |-------------|---------|
 | **setup.sh**  | Entry point: runs `install.sh` to install the toolkit into the project. Run from toolkit dir; project root = parent dir (or set `PROJECT_ROOT`). |
 | **install.sh** | Core installer: copies CLAUDE.md, .claude/, docs/. Same behavior; use directly if you prefer. |
+| **setup-hosted-mcp.sh** | Hosted MCP (Beta): checks Node and Salesforce CLI, optionally creates scratch org with MCP, generates `.cursor/mcp.json` from template (consumer key, server path). Run from project root: `./sfclaudeskills/setup-hosted-mcp.sh`. |
 
 ---
 
@@ -117,6 +146,9 @@ your-salesforce-project/
 - [Salesforce CLI](https://developer.salesforce.com/tools/sfdxcli)
 - [Salesforce DX MCP Server](https://github.com/salesforcecli/mcp)
 - [MCP Solutions (Salesforce)](https://developer.salesforce.com/docs/einstein/genai/guide/mcp.html)
+- [Salesforce Hosted MCP Servers](https://github.com/forcedotcom/mcp-hosted)
+- [mcp-hosted Wiki](https://github.com/forcedotcom/mcp-hosted/wiki)
+- [Available Tools and Servers](https://github.com/forcedotcom/mcp-hosted/wiki/Available-Tools-and-Servers)
 
 ## License
 

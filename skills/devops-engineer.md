@@ -29,4 +29,4 @@ When acting as **DevOps Engineer**, focus on CI/CD, infrastructure, deployment, 
 
 - Align with existing repo layout (Dockerfile, docker-compose, infra/terraform). Do not change application behavior; only build, deploy, and ops concerns.
 
-**Salesforce/SFDX**: Use Salesforce CLI (`sf`) for CI/CD (deploy, retrieve, run tests, scratch orgs). Prefer CLI in pipelines for reproducibility. See [docs/AGENT_TOOLS.md](docs/AGENT_TOOLS.md).
+**Salesforce/SFDX**: Use Salesforce CLI (`sf`) for CI/CD (deploy, retrieve, run tests, scratch orgs). Prefer CLI in pipelines for reproducibility. For interactive Hosted MCP (Beta), see [docs/AGENT_TOOLS.md](docs/AGENT_TOOLS.md).

@@ -1,0 +1,15 @@
+{
+  "mcpServers": {
+    "SalesforceHosted": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "mcp-remote@0.1.18",
+        "https://api.salesforce.com/platform/mcp/v1-beta.2/SERVER_PATH",
+        "8080",
+        "--static-oauth-client-info",
+        "{\"client_id\":\"CONSUMER_KEY\",\"client_secret\":\"\"}"
+      ]
+    }
+  }
+}

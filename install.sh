@@ -58,4 +58,12 @@ else
   echo "docs/AGENT_TOOLS.md already exists; not overwriting"
 fi
 
+# HOSTED_MCP_TOOLS.md (only if missing)
+if [[ -f "$TOOLKIT_DIR/docs/HOSTED_MCP_TOOLS.md" ]] && [[ ! -f "$PROJECT_ROOT/docs/HOSTED_MCP_TOOLS.md" ]]; then
+  cp "$TOOLKIT_DIR/docs/HOSTED_MCP_TOOLS.md" "$PROJECT_ROOT/docs/HOSTED_MCP_TOOLS.md"
+  echo "Created docs/HOSTED_MCP_TOOLS.md"
+else
+  [[ -f "$PROJECT_ROOT/docs/HOSTED_MCP_TOOLS.md" ]] && echo "docs/HOSTED_MCP_TOOLS.md already exists; not overwriting"
+fi
+
 echo "Done. Read this toolkit's README.md for usage and customization."

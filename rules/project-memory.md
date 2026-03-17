@@ -8,4 +8,4 @@
   - Discovering an unresolved question → add to **Open Questions**.
 - Keep entries concise. Use the existing section structure; do not remove or rename sections.
 
-**Tools**: For Salesforce/SFDX work, use Salesforce CLI (`sf`) and Salesforce MCP when available. See [docs/AGENT_TOOLS.md](docs/AGENT_TOOLS.md).
+**Tools**: For Salesforce/SFDX work, use Salesforce CLI (`sf`) and Salesforce MCP when available. For Hosted MCP (Beta), use the server/tool list in [docs/AGENT_TOOLS.md](docs/AGENT_TOOLS.md) or [docs/HOSTED_MCP_TOOLS.md](docs/HOSTED_MCP_TOOLS.md) when the client is configured for Hosted MCP. See [docs/AGENT_TOOLS.md](docs/AGENT_TOOLS.md).

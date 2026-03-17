@@ -29,4 +29,4 @@ When acting as **Software Engineer**, implement the assigned task following exis
 
 - Do not change architecture or introduce new patterns without aligning with Solution Architect or Sr SWE. Stay within the assigned task scope.
 
-**Salesforce/SFDX**: Use Salesforce CLI (`sf`) for deploy, retrieve, and tests; use Salesforce MCP when the host has it configured and the task suits natural-language operations. See [docs/AGENT_TOOLS.md](docs/AGENT_TOOLS.md).
+**Salesforce/SFDX**: Use Salesforce CLI (`sf`) for deploy, retrieve, and tests; use Salesforce MCP when the host has it configured and the task suits natural-language operations. If the host uses Salesforce Hosted MCP, use the appropriate hosted server tools (e.g. sobject-reads, platform/salesforce-api-context) per [docs/AGENT_TOOLS.md](docs/AGENT_TOOLS.md).

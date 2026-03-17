@@ -1,0 +1,6 @@
+{
+  "orgName": "MCP Beta Scratch",
+  "edition": "Developer",
+  "features": ["SalesforceHostedMCP"],
+  "hasSampleData": false
+}
