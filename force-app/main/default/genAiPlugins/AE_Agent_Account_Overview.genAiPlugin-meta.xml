@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenAiPlugin xmlns="http://soap.sforce.com/2006/04/metadata">
+    <masterLabel>Account Overview</masterLabel>
+    <developerName>AE_Agent_Account_Overview</developerName>
+    <description>Handles account overview requests including account summary, Account 360 view, customer tenure, renewal dates, pipeline, cases, contacts, and activities. Use this topic when the user asks about account details, account health, or wants to understand the full picture of an account.</description>
+    <scope>
+        <scopeType>COPILOT</scopeType>
+        <copilotName>AE_Agent</copilotName>
+    </scope>
+    <topicInstruction>You are responsible for providing account overview information. When a user first opens the agent or asks about an account, provide the Account Summary. When they ask for deeper details, renewals, 360 view, or comprehensive information, use the Account 360 action. Always pass the current Account Record Id from the conversation context. Present data clearly with section headers. Highlight urgent items: renewals due within 90 days, high-priority cases, and large open opportunities.</topicInstruction>
+    <genAiFunctions>
+        <genAiFunction>Get_Account_Summary</genAiFunction>
+        <genAiFunction>Get_Account_360</genAiFunction>
+    </genAiFunctions>
+</GenAiPlugin>

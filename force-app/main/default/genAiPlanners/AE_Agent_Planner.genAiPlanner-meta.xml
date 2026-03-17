@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenAiPlanner xmlns="http://soap.sforce.com/2006/04/metadata">
+    <masterLabel>AE Agent Planner</masterLabel>
+    <developerName>AE_Agent_Planner</developerName>
+    <description>Planner for the AE Agent copilot. Orchestrates account overview actions based on user intent.</description>
+    <plannerType>COPILOT</plannerType>
+    <copilotName>AE_Agent</copilotName>
+    <genAiPlugins>
+        <genAiPlugin>AE_Agent_Account_Overview</genAiPlugin>
+    </genAiPlugins>
+</GenAiPlanner>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenAiFunction xmlns="http://soap.sforce.com/2006/04/metadata">
+    <masterLabel>Get Account 360</masterLabel>
+    <developerName>Get_Account_360</developerName>
+    <description>Retrieves a comprehensive Account 360 view including customer tenure (when they became a customer), contract and renewal status (with alerts for upcoming renewals), opportunity pipeline with totals, open support cases, key contacts with titles, and recent activities (tasks and events). Use this when the user asks for full account details, 360 view, renewal info, or a deep dive on the account.</description>
+    <actionReference>AEAgentAccount360</actionReference>
+    <actionReferenceType>INVOCABLE_APEX</actionReferenceType>
+    <genAiFunctionParameters>
+        <genAiFunctionParameter>
+            <parameterName>accountId</parameterName>
+            <description>The Salesforce Account record Id. Use the RecordId from the conversation context.</description>
+            <isRequired>true</isRequired>
+        </genAiFunctionParameter>
+    </genAiFunctionParameters>
+</GenAiFunction>

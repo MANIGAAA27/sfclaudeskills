@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenAiFunction xmlns="http://soap.sforce.com/2006/04/metadata">
+    <masterLabel>Get Account Summary</masterLabel>
+    <developerName>Get_Account_Summary</developerName>
+    <description>Retrieves key account information including name, industry, type, owner, rating, revenue, employees, phone, website, and location. Use this when the user asks for an account overview, account summary, or basic account details.</description>
+    <actionReference>AEAgentAccountSummary</actionReference>
+    <actionReferenceType>INVOCABLE_APEX</actionReferenceType>
+    <genAiFunctionParameters>
+        <genAiFunctionParameter>
+            <parameterName>accountId</parameterName>
+            <description>The Salesforce Account record Id. Use the RecordId from the conversation context.</description>
+            <isRequired>true</isRequired>
+        </genAiFunctionParameter>
+    </genAiFunctionParameters>
+</GenAiFunction>

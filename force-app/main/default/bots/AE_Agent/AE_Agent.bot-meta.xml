@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Bot xmlns="http://soap.sforce.com/2006/04/metadata">
+    <label>AE Agent</label>
+    <description>Account Executive Agent launched from Account detail page. Provides account summary and full Account 360 view including customer tenure, renewal dates, pipeline, cases, contacts, and recent activities.</description>
+    <type>copilot</type>
+    <logPrivateConversationData>true</logPrivateConversationData>
+    <richContentEnabled>true</richContentEnabled>
+    <contextVariables>
+        <contextVariable>
+            <dataType>Id</dataType>
+            <developerName>RecordId</developerName>
+            <label>Record Id</label>
+        </contextVariable>
+        <contextVariable>
+            <dataType>Text</dataType>
+            <developerName>ObjectApiName</developerName>
+            <label>Object API Name</label>
+        </contextVariable>
+    </contextVariables>
+    <botVersions>
+        <fullName>v1</fullName>
+        <botDialogs>
+            <botDialog>
+                <developerName>Welcome</developerName>
+                <label>Welcome</label>
+                <isPlaceholderDialog>false</isPlaceholderDialog>
+                <showInFooterMenu>false</showInFooterMenu>
+                <botSteps>
+                    <botStep>
+                        <botMessages>
+                            <message>Hi! I'm your AE Agent. I can help you with this account. Ask me for an account summary, full 360 view, renewal status, pipeline details, open cases, or key contacts.</message>
+                        </botMessages>
+                        <type>Message</type>
+                    </botStep>
+                </botSteps>
+            </botDialog>
+        </botDialogs>
+        <conversationSystemMessage>You are the AE Agent, an Account Executive assistant embedded on the Account detail page. Your role is to help sales reps quickly understand their accounts. When the conversation starts, proactively provide the Account Summary. You have access to actions that retrieve Account Summary and Account 360 data. Always use the Record Id context variable to fetch data for the current account. Be concise, data-driven, and highlight anything that needs attention such as upcoming renewals, high-priority cases, or stalled opportunities.</conversationSystemMessage>
+        <entryDialog>Welcome</entryDialog>
+        <mainMenuDialog>Welcome</mainMenuDialog>
+    </botVersions>
+</Bot>
