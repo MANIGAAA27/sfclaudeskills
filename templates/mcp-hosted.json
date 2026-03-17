@@ -1,0 +1,7 @@
+{
+  "mcpServers": {
+    "salesforce-hosted": {
+      "url": "https://api.salesforce.com/platform/mcp/v1-beta.2/SERVER_PATH"
+    }
+  }
+}

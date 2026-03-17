@@ -1,6 +1,6 @@
 # Agent Tools
 
-Agents have access to the following tools. Use them whenever the work involves Salesforce, SFDX, or related platforms.
+This toolkit is for **Claude Code** only. Claude Code has access to the following tools when they are configured. Use them whenever the work involves Salesforce, SFDX, or related platforms.
 
 ---
 
@@ -38,7 +38,7 @@ Agents have access to the following tools. Use them whenever the work involves S
 
 ## Salesforce DX MCP (local)
 
-**When to use**: When the host (Cursor, Claude Desktop, etc.) has the Salesforce DX MCP Server configured, use it to run Salesforce operations via natural language instead of writing CLI commands or queries yourself. Prefer MCP when the user asks for queries, metadata operations, data operations, or org actions in natural language. For Salesforce-hosted MCP (Beta), see **Salesforce Hosted MCP** below.
+**When to use**: When Claude Code has the Salesforce DX MCP Server configured (via `claude mcp add` or `.mcp.json`), use it to run Salesforce operations via natural language instead of writing CLI commands or queries yourself. Prefer MCP when the user asks for queries, metadata operations, data operations, or org actions in natural language. For Salesforce-hosted MCP (Beta), see **Salesforce Hosted MCP** below.
 
 ### What it provides
 
@@ -53,11 +53,11 @@ Reference: [Salesforce DX MCP Server](https://developer.salesforce.com/docs/atla
 
 - Node.js v18+.
 - Salesforce CLI (`sf`) installed and at least one authenticated org.
-- MCP server configured in the host (see below).
+- MCP server configured in Claude Code (see below).
 
 ### Agent behavior
 
-- If the host supports MCP and the Salesforce DX MCP Server is configured, **prefer MCP tools** for org queries, metadata, data, and user tasks when the user’s request is natural-language.
+- Claude Code has the Salesforce DX MCP Server configured, **prefer MCP tools** for org queries, metadata, data, and user tasks when the user’s request is natural-language.
 - For scripted or CI flows (e.g. deploy in a pipeline), use **Salesforce CLI** (`sf`) so steps are reproducible and versioned.
 - Do not assume MCP is available; if MCP tools are not present, use Salesforce CLI and document in Handoff Notes that MCP can be added for future sessions.
 
@@ -65,14 +65,14 @@ Reference: [Salesforce DX MCP Server](https://developer.salesforce.com/docs/atla
 
 ## Salesforce Hosted MCP (Beta)
 
-**When to use**: Use Hosted MCP when the org has the Beta enabled and the MCP client is configured with the hosted URL and an External Client App. Same natural-language data/metadata/tooling flows as local MCP, with a single HTTPS endpoint and no local CLI auth for the MCP channel.
+**When to use**: Use Hosted MCP when the org has the Beta enabled and Claude Code has `.mcp.json` (or MCP config) with the hosted URL and you have authenticated via `/mcp` with an External Client App. Same natural-language data/metadata/tooling flows as local MCP, with a single HTTPS endpoint and no local CLI auth for the MCP channel.
 
 ### Prerequisites
 
 - Beta enabled in org: Setup → User Interface → **Enable MCP Service (Beta)**.
 - **External Client App** created (callback URL, OAuth scopes, PKCE). Not Connected Apps. See [Create an External Client App](https://github.com/forcedotcom/mcp-hosted/wiki/Create-an-External-Client-App).
 - Consumer key from the External Client App.
-- Cursor: [mcp-remote](https://www.npmjs.com/package/mcp-remote) and the hosted URL (see template below).
+- **Claude Code**: `.mcp.json` with the hosted URL (see setup-hosted-mcp.sh or [Claude Code MCP](https://code.claude.com/docs/en/mcp)); use `/mcp` in Claude Code to authenticate (OAuth).
 
 ### URL pattern
 
@@ -81,13 +81,13 @@ Reference: [Salesforce DX MCP Server](https://developer.salesforce.com/docs/atla
 
 Replace `<SERVER_NAME>` with a server from the [Available Tools and Servers](https://github.com/forcedotcom/mcp-hosted/wiki/Available-Tools-and-Servers) list (e.g. `platform/sobject-all`).
 
-### Cursor configuration
+### Claude Code configuration
 
-Use the template [templates/cursor-mcp-hosted.json](templates/cursor-mcp-hosted.json) (mcp-remote + URL + consumer key). See [Configure Your MCP Client](https://github.com/forcedotcom/mcp-hosted/wiki/Configure-Your-MCP-Client).
+Run `./sfclaudeskills/setup-hosted-mcp.sh` to generate **`.mcp.json`** in the project with the Hosted MCP URL. In Claude Code, run **`/mcp`** to authenticate with your External Client App (OAuth). See [Claude Code MCP](https://code.claude.com/docs/en/mcp).
 
 ### Available Hosted MCP servers and tools
 
-Condensed from [Available Tools and Servers](https://github.com/forcedotcom/mcp-hosted/wiki/Available-Tools-and-Servers). Full, up-to-date list is on the wiki. Prefer Hosted MCP tools when the client is configured for Hosted MCP and the task matches (e.g. SOQL → sobject-reads/sobject-all; metadata context → salesforce-api-context; invocable flows → invocable_actions).
+Condensed from [Available Tools and Servers](https://github.com/forcedotcom/mcp-hosted/wiki/Available-Tools-and-Servers). Full, up-to-date list is on the wiki. Prefer Hosted MCP tools when Claude Code is configured for Hosted MCP and the task matches (e.g. SOQL → sobject-reads/sobject-all; metadata context → salesforce-api-context; invocable flows → invocable_actions).
 
 | Server | Representative tools | Use for |
 |--------|----------------------|--------|
@@ -105,7 +105,7 @@ Condensed from [Available Tools and Servers](https://github.com/forcedotcom/mcp-
 
 ### Agent behavior
 
-- When the host is configured for Salesforce Hosted MCP, use the hosted server tools above for natural-language data and metadata tasks (SOQL, describe, create/update/delete, invocable actions, metadata/tooling context).
+- When Claude Code is configured for Salesforce Hosted MCP, use the hosted server tools above for natural-language data and metadata tasks (SOQL, describe, create/update/delete, invocable actions, metadata/tooling context).
 - For scripted or CI flows, use **Salesforce CLI** (`sf`).
 
 ---
@@ -118,24 +118,22 @@ Condensed from [Available Tools and Servers](https://github.com/forcedotcom/mcp-
 - Authenticate: `sf org login web` (or `sf org login web --alias MY_ORG`).
 - Confirm: `sf org list`.
 
-### Salesforce DX MCP (Cursor) — local
+### Salesforce DX MCP (local) in Claude Code
 
-1. Ensure Salesforce CLI and an authenticated org are set up.
-2. Copy the example MCP config to your project (see README or `templates/cursor-mcp.json`).
-3. Edit `.cursor/mcp.json`: set `--orgs` to your default org alias (or leave placeholder and set via env).
-4. Restart Cursor so it loads the MCP server.
+Add the local MCP server to the project (writes to `.mcp.json`):
 
-### Salesforce Hosted MCP (Cursor) — Beta
+```bash
+claude mcp add --transport stdio --scope project salesforce-dx -- npx -y @salesforce/mcp --orgs YOUR_ORG_ALIAS --toolsets orgs,metadata,data,users --allow-non-ga-tools
+```
+
+Replace `YOUR_ORG_ALIAS` with your org alias from `sf org list`. Restart Claude Code or run `/mcp` to refresh.
+
+### Salesforce Hosted MCP (Beta) in Claude Code
 
 1. Complete [Enable the Beta](https://github.com/forcedotcom/mcp-hosted/wiki/Enable-the-Beta) and [Create an External Client App](https://github.com/forcedotcom/mcp-hosted/wiki/Create-an-External-Client-App) in your org (see [mcp-hosted Wiki](https://github.com/forcedotcom/mcp-hosted/wiki)).
-2. Run the auto-setup script (see README): `./sfclaudeskills/setup-hosted-mcp.sh` from project root, or manually copy `templates/cursor-mcp-hosted.json` to `.cursor/mcp.json`.
-3. Replace `CONSUMER_KEY` with your External Client App consumer key, `SERVER_NAME` with the desired server (e.g. `platform/sobject-all`), and for sandbox/scratch use the `sandbox` URL segment as in the template.
-4. Restart Cursor.
-
-### Salesforce MCP (Claude Desktop / other hosts)
-
-- **Local DX MCP**: Configure as required by your host (Node.js, `sf` CLI, authenticated org).
-- **Hosted MCP**: Use the hosted server URL and OAuth (consumer key) per [Configure Your MCP Client](https://github.com/forcedotcom/mcp-hosted/wiki/Configure-Your-MCP-Client).
+2. Run from project root: `./sfclaudeskills/setup-hosted-mcp.sh` to generate **`.mcp.json`** with the Hosted MCP URL. For sandbox: `SALESFORCE_MCP_SANDBOX=1 ./sfclaudeskills/setup-hosted-mcp.sh`.
+3. In Claude Code, run **`/mcp`** to authenticate with your External Client App (OAuth).
+4. Test the connection in Claude Code.
 
 ---
 
