@@ -1,0 +1,27 @@
+{
+  "name": "@sfclaudeskills/yahoo-mail-mcp",
+  "version": "1.0.0",
+  "description": "MCP server that connects Claude Code to a Yahoo Mail mailbox over IMAP and SMTP using a Yahoo app password.",
+  "type": "module",
+  "private": true,
+  "license": "MIT",
+  "bin": {
+    "yahoo-mail-mcp": "src/index.js"
+  },
+  "main": "src/index.js",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "start": "node src/index.js",
+    "check": "node bin/check-connection.js",
+    "test": "node --test test/*.test.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.32.1",
+    "imapflow": "^2.5.9",
+    "mailparser": "^3.10.0",
+    "nodemailer": "^10.1.7",
+    "zod": "^3.25.76"
+  }
+}

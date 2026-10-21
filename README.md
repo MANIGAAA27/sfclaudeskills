@@ -8,6 +8,7 @@
 - **Lead agent (Enterprise Architect)** — Plans work, assigns roles, updates project memory.
 - **Role skills** — Solution Architect, Sr Software Engineer, Software Engineer, Product Manager, Tester, DevOps Engineer, UI/UX Expert.
 - **Salesforce tools** — Claude Code uses **Salesforce CLI** (`sf`) and **Salesforce MCP** (when configured) for orgs, deploy, retrieve, Apex tests, and data.
+- **Yahoo Mail connector** — An MCP server (`connectors/yahoo-mail`) that gives Claude Code IMAP/SMTP access to a Yahoo mailbox: search, read, save attachments, reply, send, file.
 
 ## Prerequisites
 
@@ -15,6 +16,7 @@
 - [Salesforce CLI](https://developer.salesforce.com/tools/sfdxcli) installed (`sf`).
 - At least one authenticated org: `sf org login web`.
 - For **Salesforce MCP**: Node.js v18+.
+- For the **Yahoo Mail connector**: Node.js v18+ and a Yahoo [app password](https://login.yahoo.com/account/security).
 
 ---
 
@@ -96,6 +98,29 @@ Once MCP is enabled, Claude Code can use natural language for org queries, metad
 
 ---
 
+## Yahoo Mail connector (MCP)
+
+`connectors/yahoo-mail` is an MCP server that connects Claude Code to a Yahoo mailbox over **IMAP** (read, search, flag, move) and **SMTP** (send, reply, draft). Authentication is a Yahoo **app password** — Yahoo rejects account passwords on IMAP/SMTP, and its OAuth2 path needs a partner-approved developer app.
+
+```bash
+# 1. Generate an app password: https://login.yahoo.com/account/security
+export YAHOO_EMAIL=you@yahoo.com
+export YAHOO_APP_PASSWORD=your-app-password
+
+# 2. Install, verify the login, and merge a "yahoo-mail" entry into .mcp.json
+./sfclaudeskills/setup-yahoo-mail-mcp.sh
+
+# 3. Restart Claude Code, then /mcp to confirm it is connected
+```
+
+The setup script **merges** into `.mcp.json`, so existing Salesforce MCP entries survive. The app password is referenced as `${YAHOO_APP_PASSWORD}` and never written into the file. Set `YAHOO_MCP_READ_ONLY=1` to register only the read tools (no send, move, flag or trash).
+
+Ten tools: `yahoo_list_folders`, `yahoo_search_messages`, `yahoo_get_message`, `yahoo_save_attachment`, `yahoo_send_message`, `yahoo_reply_message`, `yahoo_create_draft`, `yahoo_set_flags`, `yahoo_move_messages`, `yahoo_trash_messages`.
+
+Details: [connectors/yahoo-mail/README.md](connectors/yahoo-mail/README.md) (setup, configuration, design notes) and [docs/YAHOO_MAIL_CONNECTOR.md](docs/YAHOO_MAIL_CONNECTOR.md) (agent-facing tool reference and conventions).
+
+---
+
 ## Layout after setup
 
 ```
@@ -105,7 +130,8 @@ your-salesforce-project/
 ├── docs/
 │   ├── PROJECT_MEMORY.md
 │   ├── AGENT_TOOLS.md
-│   └── HOSTED_MCP_TOOLS.md
+│   ├── HOSTED_MCP_TOOLS.md
+│   └── YAHOO_MAIL_CONNECTOR.md
 ├── .claude/
 │   ├── rules/
 │   │   └── project-memory.md
@@ -123,14 +149,18 @@ your-salesforce-project/
     ├── setup.sh
     ├── setup-mcp-prereqs.sh  # Hosted MCP: enable Beta + deploy ECA
     ├── setup-hosted-mcp.sh
+    ├── setup-yahoo-mail-mcp.sh
     ├── install.sh
     ├── CLAUDE.md
     ├── rules/
     ├── skills/
     ├── docs/
+    ├── connectors/
+    │   └── yahoo-mail/        # Yahoo Mail MCP server (Node, no build step)
     └── templates/
         ├── PROJECT_MEMORY.md
         ├── mcp-hosted.json
+        ├── mcp-yahoo-mail.json
         └── scratch-def-mcp.json
 ```
 
@@ -143,6 +173,7 @@ your-salesforce-project/
 | **setup.sh**  | Entry point: runs `install.sh` to install the toolkit into the project. Run from toolkit dir; project root = parent dir (or set `PROJECT_ROOT`). |
 | **install.sh** | Core installer: copies CLAUDE.md, .claude/, docs/. Same behavior; use directly if you prefer. |
 | **setup-hosted-mcp.sh** | Hosted MCP (Beta) for Claude Code: checks Node and Salesforce CLI, optionally creates scratch org with MCP, generates **`.mcp.json`** in the project. Run from project root: `./sfclaudeskills/setup-hosted-mcp.sh`. Then use `/mcp` in Claude Code to authenticate. |
+| **setup-yahoo-mail-mcp.sh** | Yahoo Mail connector: installs connector dependencies, verifies IMAP/SMTP login with your app password, and **merges** a `yahoo-mail` entry into **`.mcp.json`** (existing servers preserved). Run from project root: `./sfclaudeskills/setup-yahoo-mail-mcp.sh`. |
 
 ---
 

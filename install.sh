@@ -58,6 +58,14 @@ else
   echo "docs/AGENT_TOOLS.md already exists; not overwriting"
 fi
 
+# YAHOO_MAIL_CONNECTOR.md (only if missing)
+if [[ -f "$TOOLKIT_DIR/docs/YAHOO_MAIL_CONNECTOR.md" ]] && [[ ! -f "$PROJECT_ROOT/docs/YAHOO_MAIL_CONNECTOR.md" ]]; then
+  cp "$TOOLKIT_DIR/docs/YAHOO_MAIL_CONNECTOR.md" "$PROJECT_ROOT/docs/YAHOO_MAIL_CONNECTOR.md"
+  echo "Created docs/YAHOO_MAIL_CONNECTOR.md"
+else
+  [[ -f "$PROJECT_ROOT/docs/YAHOO_MAIL_CONNECTOR.md" ]] && echo "docs/YAHOO_MAIL_CONNECTOR.md already exists; not overwriting"
+fi
+
 # HOSTED_MCP_TOOLS.md (only if missing)
 if [[ -f "$TOOLKIT_DIR/docs/HOSTED_MCP_TOOLS.md" ]] && [[ ! -f "$PROJECT_ROOT/docs/HOSTED_MCP_TOOLS.md" ]]; then
   cp "$TOOLKIT_DIR/docs/HOSTED_MCP_TOOLS.md" "$PROJECT_ROOT/docs/HOSTED_MCP_TOOLS.md"

@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "yahoo-mail": {
+      "command": "node",
+      "args": ["CONNECTOR_PATH/src/index.js"],
+      "env": {
+        "YAHOO_EMAIL": "${YAHOO_EMAIL}",
+        "YAHOO_APP_PASSWORD": "${YAHOO_APP_PASSWORD}",
+        "YAHOO_FROM_NAME": "${YAHOO_FROM_NAME:-}",
+        "YAHOO_MCP_READ_ONLY": "${YAHOO_MCP_READ_ONLY:-}"
+      }
+    }
+  }
+}

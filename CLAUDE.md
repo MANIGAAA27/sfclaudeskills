@@ -38,6 +38,7 @@ Before implementing:
 - **Salesforce CLI (sf / SFDX)** — Use for any Salesforce/SFDX work: orgs, deploy, retrieve, Apex tests, scratch orgs, metadata. Prefer `sf` over legacy `sfdx`. See [docs/AGENT_TOOLS.md](docs/AGENT_TOOLS.md).
 - **Salesforce DX MCP (local)** — When the host has the Salesforce DX MCP Server configured, use it for natural-language org queries, metadata, data, and user operations. For scripted/CI flows, use Salesforce CLI. See [docs/AGENT_TOOLS.md](docs/AGENT_TOOLS.md).
 - **Salesforce Hosted MCP (Beta)** — When the host is configured for Salesforce Hosted MCP, use the hosted tools (sobject reads/mutations, invocable actions, metadata/tooling context, etc.) for natural-language data and metadata tasks. See [docs/AGENT_TOOLS.md](docs/AGENT_TOOLS.md) and [docs/HOSTED_MCP_TOOLS.md](docs/HOSTED_MCP_TOOLS.md).
+- **Yahoo Mail MCP (local)** — When the project has the Yahoo Mail connector configured (`connectors/yahoo-mail`), use it to search, read, file and send mail on the connected Yahoo mailbox. Use it for email context, not for Salesforce email metadata (Email-to-Case, Email Services, Email Relay belong to Salesforce CLI/MCP). See [docs/YAHOO_MAIL_CONNECTOR.md](docs/YAHOO_MAIL_CONNECTOR.md).
 
 When planning or executing tasks that touch Salesforce, assign work that uses these tools (e.g. DevOps for CI/deploy, Software Engineer for metadata/code); ensure PROJECT_MEMORY records org aliases and conventions if they affect the team.
 

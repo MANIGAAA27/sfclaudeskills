@@ -110,6 +110,33 @@ Condensed from [Available Tools and Servers](https://github.com/forcedotcom/mcp-
 
 ---
 
+## Yahoo Mail MCP (local)
+
+**When to use**: When the project has the **Yahoo Mail MCP connector** configured (`connectors/yahoo-mail`), use it for anything involving the connected Yahoo mailbox — searching and reading mail, saving attachments, replying, sending, filing. Use it to pull email context into Salesforce work (e.g. a customer thread behind a case), not to configure Salesforce email features; Email-to-Case, Email Services and Email Relay are org metadata and belong to Salesforce CLI / Salesforce MCP.
+
+### What it provides
+
+- **Read**: `yahoo_list_folders`, `yahoo_search_messages`, `yahoo_get_message`, `yahoo_save_attachment`.
+- **Write**: `yahoo_send_message`, `yahoo_reply_message`, `yahoo_create_draft`, `yahoo_set_flags`, `yahoo_move_messages`, `yahoo_trash_messages` — suppressed entirely when `YAHOO_MCP_READ_ONLY` is set.
+
+Full tool reference and agent conventions: [YAHOO_MAIL_CONNECTOR.md](YAHOO_MAIL_CONNECTOR.md).
+
+### Prerequisites
+
+- Node.js v18+.
+- A Yahoo **app password** (Yahoo rejects account passwords on IMAP/SMTP), exported as `YAHOO_EMAIL` and `YAHOO_APP_PASSWORD`.
+- Outbound TCP 993 and 465.
+
+### Agent behavior
+
+- Search first to get a UID, then read. UIDs are **per folder** — never reuse one across folders.
+- Reading a message does not mark it read; only set `\Seen` when the user asked.
+- Use `yahoo_reply_message` for replies so threading headers are correct.
+- Draft rather than send when the user should see the text first; confirm before sending or trashing.
+- Never write the app password into `.mcp.json`, a commit, a log, or PROJECT_MEMORY.
+
+---
+
 ## Enabling tools in your environment
 
 ### Salesforce CLI
@@ -134,6 +161,21 @@ Replace `YOUR_ORG_ALIAS` with your org alias from `sf org list`. Restart Claude 
 2. Run from project root: `./sfclaudeskills/setup-hosted-mcp.sh` to generate **`.mcp.json`** with the Hosted MCP URL. For sandbox: `SALESFORCE_MCP_SANDBOX=1 ./sfclaudeskills/setup-hosted-mcp.sh`.
 3. In Claude Code, run **`/mcp`** to authenticate with your External Client App (OAuth).
 4. Test the connection in Claude Code.
+
+### Yahoo Mail MCP in Claude Code
+
+1. Generate a Yahoo app password: [login.yahoo.com/account/security](https://login.yahoo.com/account/security) → Generate app password.
+2. Export the credentials in the shell that starts Claude Code:
+
+   ```bash
+   export YAHOO_EMAIL=you@yahoo.com
+   export YAHOO_APP_PASSWORD=your-app-password
+   ```
+
+3. Run from project root: `./sfclaudeskills/setup-yahoo-mail-mcp.sh`. It installs dependencies, verifies IMAP and SMTP login, and merges a `yahoo-mail` entry into **`.mcp.json`** without disturbing the Salesforce servers already there.
+4. Restart Claude Code and run **`/mcp`** to confirm `yahoo-mail` is connected.
+
+Read-only mode: `export YAHOO_MCP_READ_ONLY=1` before starting Claude Code.
 
 ---
 
